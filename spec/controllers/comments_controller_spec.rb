@@ -53,8 +53,11 @@ RSpec.describe CommentsController, type: :controller do
     end
 
     context 'when authorized' do
-      let(:valid_attributes) { { content: 'My awesome comment for article' } }
-      let(:invalid_attributes) { { content: '' } }
+      let(:valid_attributes) do
+        { data: { attributes: { content: 'My awesome comment for article' } } }
+      end
+
+      let(:invalid_attributes) { { data: { attributes: { content: '' } } } }
 
       let(:user) { create :user }
       let(:access_token) { user.create_access_token }
@@ -62,7 +65,9 @@ RSpec.describe CommentsController, type: :controller do
       before { request.headers['authorization'] = "Bearer #{access_token.token}" }
 
       context "with valid params" do
-        subject { post :create, params: {article_id: article.id, comment: valid_attributes} }
+        subject do
+          post :create, params: valid_attributes.merge(article_id: article.id)
+        end
 
         it 'returns 201 status code' do
           subject
@@ -83,7 +88,7 @@ RSpec.describe CommentsController, type: :controller do
 
       context "with invalid params" do
         subject do
-          post :create, params: {article_id: article.id, comment: invalid_attributes}
+          post :create, params: invalid_attributes.merge(article_id: article.id)
         end
 
         it 'should return 422 status code' do

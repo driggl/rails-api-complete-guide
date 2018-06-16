@@ -28,8 +28,9 @@ class CommentsController < ApplicationController
     @article = Article.find(params[:article_id])
   end
 
-  # Only allow a trusted parameter "white list" through.
   def comment_params
-    params.require(:comment).permit(:content)
+    params.require(:data).require(:attributes).
+      permit(:content) ||
+      ActionController::Parameters.new
   end
 end
