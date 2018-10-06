@@ -61,6 +61,16 @@ describe RegistrationsController do
         expect{ subject }.to change{ User.count }.by(1)
         expect(User.exists?(login: 'jsmith')).to be_truthy
       end
+
+      it 'should return proper json' do
+        subject
+        expect(json_data['attributes']).to eq({
+          'login' => 'jsmith',
+          'avatar-url' => nil,
+          'url' => nil,
+          'name' => nil
+        })
+      end
     end
   end
 end
