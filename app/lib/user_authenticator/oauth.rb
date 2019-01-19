@@ -25,6 +25,8 @@ class UserAuthenticator::Oauth < UserAuthenticator
 
   def token
     @token ||= client.exchange_code_for_token(code)
+  rescue Octokit::NotFound
+    raise AuthenticationError
   end
 
   def user_data
