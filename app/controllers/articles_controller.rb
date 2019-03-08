@@ -3,8 +3,8 @@ class ArticlesController < ApplicationController
 
   def index
     articles = Article.recent.
-      page(params.dig(:page, :number) || params[:page]).
-      per(params.dig(:page, :size) || params[:per_page])
+      page(current_page).
+      per(per_page)
     render json: articles
   end
 
