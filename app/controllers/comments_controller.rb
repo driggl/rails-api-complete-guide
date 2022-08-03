@@ -16,10 +16,6 @@ class CommentsController < ApplicationController
 
     @comment.save!
     render json: @comment, status: :created, location: @article
-  rescue
-    render json: @comment, adapter: :json_api,
-      serializer: ErrorSerializer,
-      status: :unprocessable_entity
   end
 
   private
